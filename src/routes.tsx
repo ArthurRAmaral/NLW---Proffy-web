@@ -1,12 +1,11 @@
 import React from "react";
 import { BrowserRouter, Route } from "react-router-dom";
-
-import HelloWorld from "./components/HellowWorld";
+import Landing from "./pages/Landing";
 
 function Routes() {
   return (
     <BrowserRouter>
-      <Route path="/" exact component={HelloWorld} />
+      <Route path="/" exact component={Landing} />
     </BrowserRouter>
   );
 }
