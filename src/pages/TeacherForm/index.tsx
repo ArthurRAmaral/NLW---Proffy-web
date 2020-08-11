@@ -1,14 +1,19 @@
 import React, { useState, FormEvent } from "react";
+import { useHistory } from "react-router-dom";
 
-import "./styles.css";
 import PageHeader from "../../components/PageHeader/";
 import Input from "../../components/Input";
-
-import warningItem from "../../assets/images/icons/warning.svg";
 import Textarea from "../../components/Taxtarea";
 import Select from "../../components/Select";
 
+import api from "../../services/api";
+
+import warningItem from "../../assets/images/icons/warning.svg";
+
+import "./styles.css";
+
 export default function TeacherForm() {
+  const history = useHistory();
   const [name, setName] = useState("");
   const [avatar, setAvatar] = useState("");
   const [whatsapp, setWhatsapp] = useState("");
@@ -48,7 +53,21 @@ export default function TeacherForm() {
   function hendleSubmit(e: FormEvent) {
     e.preventDefault();
 
-    console.log({ name, avatar, whatsapp, bio, subject, cost });
+    api
+      .post("/classes", {
+        name,
+        avatar,
+        whatsapp,
+        bio,
+        subject,
+        cost,
+        schedule: scheduleItems,
+      })
+      .then(() => {
+        alert("Cadastro feito com sucesso!!!");
+        history.push("/");
+      })
+      .catch(() => alert("Erro ao realizar o cadastro T_T"));
   }
 
   return (
@@ -140,6 +159,7 @@ export default function TeacherForm() {
                       { value: "5", label: "Sexta-feira" },
                       { value: "6", label: "Sábado" },
                     ]}
+                    value={scheduleItem.week_day}
                     onChange={(e) => {
                       setScheduleItemValue(index, "week_day", e.target.value);
                     }}
@@ -148,6 +168,7 @@ export default function TeacherForm() {
                     name="from"
                     label="Das"
                     type="time"
+                    value={scheduleItem.from}
                     onChange={(e) => {
                       setScheduleItemValue(index, "from", e.target.value);
                     }}
@@ -156,6 +177,7 @@ export default function TeacherForm() {
                     name="to"
                     label="Até"
                     type="time"
+                    value={scheduleItem.to}
                     onChange={(e) => {
                       setScheduleItemValue(index, "to", e.target.value);
                     }}
