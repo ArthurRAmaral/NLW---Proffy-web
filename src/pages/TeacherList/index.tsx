@@ -1,12 +1,31 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./styles.css";
 
 import PageHeader from "../../components/PageHeader/";
-import TeacherItem from "../../components/TeacherItem";
+import TeacherItem, { ClassItem } from "../../components/TeacherItem";
 import Input from "../../components/Input";
 import Select from "../../components/Select";
+import api from "../../services/api";
 
 export default function TeacherList() {
+  const [subject, setSubject] = useState("");
+  const [week_day, setWeek_day] = useState("");
+  const [time, setTime] = useState("");
+
+  const [classes, setClasses] = useState<Array<ClassItem>>([]);
+
+  useEffect(() => {
+    api
+      .get("/classes", {
+        params: {
+          week_day,
+          subject,
+          time,
+        },
+      })
+      .then((response) => setClasses(response.data));
+  }, [subject, week_day, time]);
+
   return (
     <div className="container" id="page-teacher-list">
       <PageHeader title="Esses são os Proffys disponíveis.">
@@ -26,6 +45,7 @@ export default function TeacherList() {
               { value: "Português", label: "Português" },
               { value: "Química", label: "Química" },
             ]}
+            onChange={(e) => setSubject(e.target.value)}
           />
           <Select
             name="week_day"
@@ -39,15 +59,21 @@ export default function TeacherList() {
               { value: "5", label: "Sexta-feira" },
               { value: "6", label: "Sábado" },
             ]}
+            onChange={(e) => setWeek_day(e.target.value)}
           />
-          <Input name="time" label="Hora" type="time" />
+          <Input
+            name="time"
+            label="Hora"
+            type="time"
+            onChange={(e) => setTime(e.target.value)}
+          />
         </form>
       </PageHeader>
 
       <main>
-        <TeacherItem />
-        <TeacherItem />
-        <TeacherItem />
+        {classes.map((classItem) => (
+          <TeacherItem key={classItem.id} classItem={classItem} />
+        ))}
       </main>
     </div>
   );

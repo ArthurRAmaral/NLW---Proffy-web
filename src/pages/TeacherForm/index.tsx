@@ -9,6 +9,14 @@ import Textarea from "../../components/Taxtarea";
 import Select from "../../components/Select";
 
 export default function TeacherForm() {
+  const [name, setName] = useState("");
+  const [avatar, setAvatar] = useState("");
+  const [whatsapp, setWhatsapp] = useState("");
+  const [bio, setBio] = useState("");
+
+  const [subject, setSubject] = useState("");
+  const [cost, setCost] = useState("");
+
   const [scheduleItems, setScheduleItems] = useState([
     { week_day: 0, from: "", to: "" },
   ]);
@@ -35,10 +43,26 @@ export default function TeacherForm() {
         <fieldset>
           <legend>Seus dados</legend>
 
-          <Input name="name" label="Nome completo" />
-          <Input name="avatar" label="Avatar" />
-          <Input name="whatsapp" label="Whatsapp" />
-          <Textarea name="bio" label="Biografia" />
+          <Input
+            name="name"
+            label="Nome completo"
+            onChange={(e) => setName(e.target.value)}
+          />
+          <Input
+            name="avatar"
+            label="Avatar"
+            onChange={(e) => setAvatar(e.target.value)}
+          />
+          <Input
+            name="whatsapp"
+            label="Whatsapp"
+            onChange={(e) => setWhatsapp(e.target.value)}
+          />
+          <Textarea
+            name="bio"
+            label="Biografia"
+            onChange={(e) => setBio(e.target.value)}
+          />
         </fieldset>
 
         <fieldset>
@@ -59,8 +83,13 @@ export default function TeacherForm() {
               { value: "Português", label: "Português" },
               { value: "Química", label: "Química" },
             ]}
+            onChange={(e) => setSubject(e.target.value)}
           />
-          <Input name="const" label="Custo da sua aula por hora" />
+          <Input
+            name="cost"
+            label="Custo da sua aula por hora"
+            onChange={(e) => setCost(e.target.value)}
+          />
         </fieldset>
 
         <fieldset>

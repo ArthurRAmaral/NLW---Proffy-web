@@ -3,39 +3,54 @@ import React from "react";
 import "./styles.css";
 
 import whatsappIcon from "../../assets/images/icons/whatsapp.svg";
+import api from "../../services/api";
 
-function TeacherItem() {
+export interface ClassItem {
+  id: string;
+  subject: string;
+  cost: Number;
+  user_id: string;
+  name: string;
+  avatar: string;
+  whatsapp: string;
+  bio: string;
+}
+
+interface TeacherItemProps {
+  classItem: ClassItem;
+}
+
+const TeacherItem: React.FC<TeacherItemProps> = ({ classItem }) => {
+  const contact = () => {
+    api.post("/connections", {
+      user_id: classItem.user_id,
+    });
+    window.location.href = `https://api.whatsapp.com/send?phone=${classItem.whatsapp}`;
+  };
+
   return (
     <article className="teacher-item">
       <header>
-        <img
-          src="https://avatars1.githubusercontent.com/u/48517851?s=460&u=e10285ca90c276061678115ab64518cfdba2699b&v=4"
-          alt="Arthur Amaral"
-        />
+        <img src={classItem.avatar} alt={classItem.name} />
         <div>
-          <strong>Arthur Amaral</strong>
-          <span>Matemática</span>
+          <strong>{classItem.name}</strong>
+          <span>{classItem.subject}</span>
         </div>
       </header>
-      <p>
-        Aulas de Matemática e de Lógica.
-        <br /> <br />
-        Estude para com um matérial personalizado e totalmente didático, para
-        que possa aprender muitos conteúdos com grande absorção destes.
-      </p>
+      <p>{classItem.bio}</p>
 
       <footer>
         <p>
           Preço/hora
-          <strong>R$ 15,00</strong>
+          <strong>R$ {classItem.cost}</strong>
         </p>
-        <button type="button">
+        <button type="button" onClick={contact}>
           <img src={whatsappIcon} alt="Whatsapp" />
           Entrar em Contato
         </button>
       </footer>
     </article>
   );
-}
+};
 
 export default TeacherItem;
