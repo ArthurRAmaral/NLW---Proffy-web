@@ -25,7 +25,6 @@ const TeacherItem: React.FC<TeacherItemProps> = ({ classItem }) => {
     api.post("/connections", {
       user_id: classItem.user_id,
     });
-    window.location.href = `https://api.whatsapp.com/send?phone=${classItem.whatsapp}`;
   };
 
   return (
@@ -44,10 +43,13 @@ const TeacherItem: React.FC<TeacherItemProps> = ({ classItem }) => {
           Preço/hora
           <strong>R$ {classItem.cost}</strong>
         </p>
-        <button type="button" onClick={contact}>
+        <a
+          onClick={contact}
+          href={`https://api.whatsapp.com/send?phone=${classItem.whatsapp}`}
+        >
           <img src={whatsappIcon} alt="Whatsapp" />
           Entrar em Contato
-        </button>
+        </a>
       </footer>
     </article>
   );
